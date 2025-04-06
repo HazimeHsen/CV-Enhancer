@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
+import { AuthProvider } from "@/lib/auth-context";
 
 export const metadata: Metadata = {
   title: "v0 App",
@@ -18,9 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div className="min-h-screen flex flex-col">
-          <Navbar />
-          {children}
-          <Footer />
+          <AuthProvider>{children}</AuthProvider>
         </div>
       </body>
     </html>

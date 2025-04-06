@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState, useEffect, useRef } from "react";
+import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Testimonial {
-  id: number
-  name: string
-  role: string
-  company: string
-  avatar: string
-  content: string
-  rating: number
+  id: number;
+  name: string;
+  role: string;
+  company: string;
+  avatar: string;
+  content: string;
+  rating: number;
 }
 
 export function TestimonialSlider() {
@@ -76,33 +76,69 @@ export function TestimonialSlider() {
         "The industry-specific recommendations were spot on. I was able to highlight relevant financial metrics and achievements that caught the attention of hiring managers.",
       rating: 5,
     },
-  ]
+  ];
 
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [autoplay, setAutoplay] = useState(true)
-  const maxIndex = testimonials.length - 3
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [autoplay, setAutoplay] = useState(true);
+  const [slidesPerView, setSlidesPerView] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
 
+  // Calculate max index based on screen size
+  const maxIndex = testimonials.length - slidesPerView;
+
+  // Update slides per view based on screen size
   useEffect(() => {
-    let interval: NodeJS.Timeout
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSlidesPerView(3); // Desktop: 3 slides
+      } else if (window.innerWidth >= 640) {
+        setSlidesPerView(2); // Tablet: 2 slides
+      } else {
+        setSlidesPerView(1); // Mobile: 1 slide
+      }
+    };
+
+    // Initial calculation
+    handleResize();
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Clean up
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Autoplay effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
 
     if (autoplay) {
       interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex >= maxIndex ? 0 : prevIndex + 1))
-      }, 5000)
+        setCurrentIndex((prevIndex) =>
+          prevIndex >= maxIndex ? 0 : prevIndex + 1
+        );
+      }, 5000);
     }
 
-    return () => clearInterval(interval)
-  }, [autoplay, maxIndex])
+    return () => clearInterval(interval);
+  }, [autoplay, maxIndex]);
+
+  // Ensure currentIndex is valid when slidesPerView changes
+  useEffect(() => {
+    if (currentIndex > maxIndex && maxIndex >= 0) {
+      setCurrentIndex(maxIndex);
+    }
+  }, [slidesPerView, currentIndex, maxIndex]);
 
   const handlePrev = () => {
-    setAutoplay(false)
-    setCurrentIndex((prevIndex) => (prevIndex <= 0 ? maxIndex : prevIndex - 1))
-  }
+    setAutoplay(false);
+    setCurrentIndex((prevIndex) => (prevIndex <= 0 ? maxIndex : prevIndex - 1));
+  };
 
   const handleNext = () => {
-    setAutoplay(false)
-    setCurrentIndex((prevIndex) => (prevIndex >= maxIndex ? 0 : prevIndex + 1))
-  }
+    setAutoplay(false);
+    setCurrentIndex((prevIndex) => (prevIndex >= maxIndex ? 0 : prevIndex + 1));
+  };
 
   const getAvatarColor = (id: number) => {
     const colors = [
@@ -112,22 +148,29 @@ export function TestimonialSlider() {
       "bg-purple-100 text-purple-600",
       "bg-pink-100 text-pink-600",
       "bg-indigo-100 text-indigo-600",
-    ]
-    return colors[id % colors.length]
-  }
+    ];
+    return colors[id % colors.length];
+  };
+
+  const translatePercentage =
+    slidesPerView === 1
+      ? currentIndex * 100
+      : slidesPerView === 2
+      ? currentIndex * 50
+      : currentIndex * (100 / 3);
 
   return (
-    <div className="relative">
-      {/* Navigation Buttons */}
+    <div className="relative px-8 sm:px-10">
+      {/* Navigation Buttons - Repositioned for better mobile experience */}
       <div className="absolute inset-y-0 left-0 z-10 flex items-center">
         <Button
           variant="outline"
           size="icon"
-          className="rounded-full bg-white shadow-md hover:bg-gray-50 -ml-5"
+          className="rounded-full bg-white shadow-md hover:bg-gray-50"
           onClick={handlePrev}
+          aria-label="Previous testimonial"
         >
           <ChevronLeft className="h-5 w-5" />
-          <span className="sr-only">Previous</span>
         </Button>
       </div>
 
@@ -135,48 +178,63 @@ export function TestimonialSlider() {
         <Button
           variant="outline"
           size="icon"
-          className="rounded-full bg-white shadow-md hover:bg-gray-50 -mr-5"
+          className="rounded-full bg-white shadow-md hover:bg-gray-50"
           onClick={handleNext}
+          aria-label="Next testimonial"
         >
           <ChevronRight className="h-5 w-5" />
-          <span className="sr-only">Next</span>
         </Button>
       </div>
 
       {/* Testimonial Cards */}
-      <div className="overflow-hidden">
+      <div className="overflow-hidden py-2" ref={containerRef}>
         <div
           className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentIndex * (100 / 3)}%)` }}
+          style={{ transform: `translateX(-${translatePercentage}%)` }}
         >
-          {testimonials.map((testimonial, index) => (
-            <div key={testimonial.id} className="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
-              <div className="bg-white rounded-xl shadow-md p-6 h-full border border-gray-100 flex flex-col">
+          {testimonials.map((testimonial) => (
+            <div
+              key={testimonial.id}
+              className="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4"
+            >
+              <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 h-full border border-gray-100 flex flex-col">
                 <div className="mb-4 flex justify-between items-start">
                   <div className="flex items-center">
                     <div
-                      className={`h-12 w-12 rounded-full ${getAvatarColor(testimonial.id)} flex items-center justify-center text-xl font-bold`}
+                      className={`h-10 w-10 sm:h-12 sm:w-12 rounded-full ${getAvatarColor(
+                        testimonial.id
+                      )} flex items-center justify-center text-lg sm:text-xl font-bold`}
                     >
                       {testimonial.avatar}
                     </div>
-                    <div className="ml-4">
-                      <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
-                      <p className="text-sm text-gray-500">
+                    <div className="ml-3 sm:ml-4">
+                      <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
+                        {testimonial.name}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-gray-500">
                         {testimonial.role} at {testimonial.company}
                       </p>
                     </div>
                   </div>
-                  <Quote className="h-6 w-6 text-blue-200 flex-shrink-0" />
+                  <Quote className="h-5 w-5 sm:h-6 sm:w-6 text-blue-200 flex-shrink-0" />
                 </div>
 
-                <p className="text-gray-600 italic flex-grow">"{testimonial.content}"</p>
+                <p className="text-gray-600 italic flex-grow text-sm sm:text-base">
+                  "{testimonial.content}"
+                </p>
 
                 <div className="flex mt-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                    <Star
+                      key={i}
+                      className="h-4 w-4 text-yellow-400 fill-yellow-400"
+                    />
                   ))}
                   {[...Array(5 - testimonial.rating)].map((_, i) => (
-                    <Star key={i + testimonial.rating} className="h-4 w-4 text-gray-200" />
+                    <Star
+                      key={i + testimonial.rating}
+                      className="h-4 w-4 text-gray-200"
+                    />
                   ))}
                 </div>
               </div>
@@ -185,23 +243,22 @@ export function TestimonialSlider() {
         </div>
       </div>
 
-      {/* Dots Navigation */}
       <div className="mt-6 flex justify-center space-x-2">
-        {Array.from({ length: maxIndex + 1 }).map((_, index) => (
-          <button
-            key={index}
-            className={`h-2 w-2 rounded-full transition-all ${
-              index === currentIndex ? "bg-blue-600 w-4" : "bg-gray-300"
-            }`}
-            onClick={() => {
-              setAutoplay(false)
-              setCurrentIndex(index)
-            }}
-            aria-label={`Go to testimonial group ${index + 1}`}
-          />
-        ))}
+        {maxIndex >= 0 &&
+          Array.from({ length: maxIndex + 1 }).map((_, index) => (
+            <button
+              key={index}
+              className={`h-2 w-2 rounded-full transition-all ${
+                index === currentIndex ? "bg-blue-600 w-4" : "bg-gray-300"
+              }`}
+              onClick={() => {
+                setAutoplay(false);
+                setCurrentIndex(index);
+              }}
+              aria-label={`Go to testimonial group ${index + 1}`}
+            />
+          ))}
       </div>
     </div>
-  )
+  );
 }
-

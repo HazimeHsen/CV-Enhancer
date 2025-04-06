@@ -75,15 +75,15 @@ export function LandingPage() {
 
   return (
     <main className="flex-grow">
-      <section className="relative bg-gradient-to-br from-white via-blue-50 to-indigo-50 pt-24 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-white via-blue-50 to-indigo-50 py-56 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-          <div className="absolute top-40 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-20 left-1/3 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-800 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+          <div className="absolute top-40 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 "></div>
+          <div className="absolute -bottom-20 left-1/3 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 "></div>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <div>
               <div className="inline-block px-4 py-1 rounded-full bg-blue-100 text-blue-700 font-medium text-sm mb-6">
                 AI-Powered CV Enhancement
@@ -97,7 +97,7 @@ export function LandingPage() {
                 descriptions, with clear recommendations on what to improve and
                 what skills to develop.
               </p>
-              <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4">
                 <Link href="/enhancer">
                   <Button
                     size="lg"
@@ -135,8 +135,8 @@ export function LandingPage() {
                   </div>
                   <div className="space-y-4">
                     <div className="bg-green-50 p-3 rounded-md border border-green-100">
-                      <div className="flex">
-                        <div className="text-green-700 w-8 flex-shrink-0 select-none">
+                      <div className="flex items-center">
+                        <div className="text-green-700 w-4 flex-shrink-0 select-none">
                           +
                         </div>
                         <div className="text-green-900 text-sm font-mono">
@@ -145,8 +145,8 @@ export function LandingPage() {
                       </div>
                     </div>
                     <div className="bg-red-50 p-3 rounded-md border border-red-100">
-                      <div className="flex">
-                        <div className="text-red-700 w-8 flex-shrink-0 select-none">
+                      <div className="flex items-center">
+                        <div className="text-red-700 w-4 flex-shrink-0 select-none">
                           -
                         </div>
                         <div className="text-red-900 text-sm font-mono">
@@ -190,7 +190,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="bg-white py-12 border-y border-gray-100">
+      <section className="bg-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
@@ -227,7 +227,7 @@ export function LandingPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {features.map((feature, index) => (
               <div
                 key={index}
@@ -267,19 +267,11 @@ export function LandingPage() {
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             <div className="relative">
-              <div className="absolute top-0 left-0 -ml-4 mt-2 hidden md:block">
-                <div className="h-12 w-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
-                  1
-                </div>
-              </div>
               <div className="bg-white rounded-xl p-8 shadow-md border border-gray-100 md:ml-6 hover:shadow-lg transition-all">
-                <h3 className="text-xl font-bold text-gray-900 mb-2 md:hidden flex items-center">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center">
                   <span className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg mr-2">
                     1
                   </span>
-                  Upload Your CV
-                </h3>
-                <h3 className="text-xl font-bold text-gray-900 mb-4 hidden md:block">
                   Upload Your CV
                 </h3>
                 <p className="text-gray-600 mb-4">
@@ -295,21 +287,14 @@ export function LandingPage() {
             </div>
 
             <div className="relative">
-              <div className="absolute top-0 left-0 -ml-4 mt-2 hidden md:block">
-                <div className="h-12 w-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
-                  2
-                </div>
-              </div>
               <div className="bg-white rounded-xl p-8 shadow-md border border-gray-100 md:ml-6 hover:shadow-lg transition-all">
-                <h3 className="text-xl font-bold text-gray-900 mb-2 md:hidden flex items-center">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center">
                   <span className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg mr-2">
                     2
                   </span>
                   Add Job Description
                 </h3>
-                <h3 className="text-xl font-bold text-gray-900 mb-4 hidden md:block">
-                  Add Job Description
-                </h3>
+
                 <p className="text-gray-600 mb-4">
                   Paste the job description you're applying for. This helps our
                   AI tailor recommendations specifically for that role.
@@ -323,21 +308,14 @@ export function LandingPage() {
             </div>
 
             <div className="relative">
-              <div className="absolute top-0 left-0 -ml-4 mt-2 hidden md:block">
-                <div className="h-12 w-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
-                  3
-                </div>
-              </div>
               <div className="bg-white rounded-xl p-8 shadow-md border border-gray-100 md:ml-6 hover:shadow-lg transition-all">
-                <h3 className="text-xl font-bold text-gray-900 mb-2 md:hidden flex items-center">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center">
                   <span className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg mr-2">
                     3
                   </span>
                   Get Recommendations
                 </h3>
-                <h3 className="text-xl font-bold text-gray-900 mb-4 hidden md:block">
-                  Get Recommendations
-                </h3>
+
                 <p className="text-gray-600 mb-4">
                   Receive detailed recommendations on how to improve your CV,
                   what skills to highlight, and get a tailored cover letter.
@@ -375,7 +353,7 @@ export function LandingPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
             {benefits.map((benefit, index) => (
               <div
                 key={index}
@@ -433,7 +411,7 @@ export function LandingPage() {
             and landed their dream jobs.
           </p>
           <div className="mt-8">
-            <Link href="/enhancer">
+            <Link href="/sign-in">
               <Button
                 size="lg"
                 variant="secondary"
