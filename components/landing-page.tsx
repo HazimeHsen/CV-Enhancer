@@ -14,8 +14,6 @@ import {
   Zap,
   Check,
 } from "lucide-react";
-import { Navbar } from "./navbar";
-import { Footer } from "./footer";
 import { TestimonialSlider } from "./testimonial-slider";
 
 export function LandingPage() {
@@ -75,7 +73,7 @@ export function LandingPage() {
 
   return (
     <main className="flex-grow">
-      <section className="relative bg-gradient-to-br from-white via-blue-50 to-indigo-50 py-56 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-white via-blue-50 to-indigo-50 py-32 md:py-56 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
           <div className="absolute top-20 left-10 w-72 h-72 bg-blue-800 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
           <div className="absolute top-40 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 "></div>
@@ -115,7 +113,7 @@ export function LandingPage() {
                 </Button>
               </div>
             </div>
-            <div className="relative">
+            <div className="relative max-w-[250px] sm:max-w-md md:max-w-3xl mx-auto mt-14 md:mt-0">
               <div className="relative">
                 <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100 transform rotate-1 hover:rotate-0 transition-transform duration-300">
                   <div className="flex items-center justify-between mb-6">
@@ -164,7 +162,7 @@ export function LandingPage() {
                 </div>
               </div>
 
-              <div className="absolute -top-10 -right-10 bg-white p-4 rounded-xl shadow-lg transform -rotate-3 hidden md:block">
+              <div className="absolute -top-10 -right-10 bg-white p-4 rounded-xl shadow-lg transform -rotate-3">
                 <div className="flex items-center">
                   <div className="rounded-full bg-green-100 p-2">
                     <Check className="h-4 w-4 text-green-600" />
@@ -175,7 +173,7 @@ export function LandingPage() {
                 </div>
               </div>
 
-              <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-lg transform rotate-6 hidden md:block">
+              <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-lg transform rotate-6">
                 <div className="flex items-center">
                   <div className="rounded-full bg-blue-100 p-2">
                     <Award className="h-4 w-4 text-blue-600" />
