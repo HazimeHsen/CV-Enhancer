@@ -3,6 +3,7 @@
 import { useState } from "react"
 import axios from "axios"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FileUploader } from "./file-uploader"
 import { JobDescriptionForm } from "./job-description-form"
@@ -32,7 +33,6 @@ export function CvEnhancer() {
   const [activeTab, setActiveTab] = useState("upload")
   const [originalCvText, setOriginalCvText] = useState("")
   const [activeResultTab, setActiveResultTab] = useState("cv")
-  const [useEconomyMode, setUseEconomyMode] = useState(true)
 
   const handleSubmit = async () => {
     if (!file || !jobDescription) {
@@ -62,7 +62,6 @@ export function CvEnhancer() {
           fileName: file.name,
           fileType: file.type,
           jobDescription,
-          mode: useEconomyMode ? "economy" : "premium",
         },
         {
           headers: {
@@ -132,64 +131,32 @@ export function CvEnhancer() {
   const isFormComplete = !!file && !!jobDescription
 
   return (
-    <div className="bg-gray-50 p-6 rounded-xl">
-      {activeTab === "upload" ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <Card className="">
+      <CardContent className="p-6">
+        {activeTab === "upload" ? (
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Upload Your CV</h2>
+            <h2 className="text-xl font-semibold text-center mb-6">Upload Your CV & Job Description</h2>
+
             <FileUploader file={file} setFile={setFile} />
-          </div>
 
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Job Description</h2>
             <JobDescriptionForm jobDescription={jobDescription} setJobDescription={setJobDescription} />
-          </div>
 
-          <div className="md:col-span-2">
             {error && (
-              <Alert variant="destructive" className="bg-red-50 border-red-200 mb-4">
-                <AlertCircle className="h-4 w-4 text-red-600" />
-                <AlertTitle className="text-red-800">Error</AlertTitle>
-                <AlertDescription className="text-red-700">{error}</AlertDescription>
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
 
-            <div className="flex items-center justify-between border rounded-md p-4 bg-gray-50 mb-4">
-              <div>
-                <h3 className="font-medium">Processing Mode</h3>
-                <p className="text-sm text-gray-500">
-                  Economy mode uses GPT-3.5 (faster, more affordable). Premium mode uses GPT-4 (higher quality, more
-                  expensive).
-                </p>
-              </div>
-              <div className="flex items-center">
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={!useEconomyMode}
-                    onChange={() => setUseEconomyMode(!useEconomyMode)}
-                  />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                  <span className="ml-3 text-sm font-medium text-gray-900">
-                    {useEconomyMode ? "Economy" : "Premium"}
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row justify-between gap-3">
+            <div className="flex justify-between mt-6">
               <Link href="/">
                 <Button variant="outline">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Back to Home
                 </Button>
               </Link>
-              <Button
-                onClick={handleSubmit}
-                disabled={!isFormComplete || status === "processing"}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
+              <Button onClick={handleSubmit} disabled={!isFormComplete || status === "processing"}>
                 {status === "processing" ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -201,40 +168,36 @@ export function CvEnhancer() {
               </Button>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setActiveTab("upload")}
-              className="flex items-center gap-1"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Upload
-            </Button>
+        ) : (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between mb-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveTab("upload")}
+                className="flex items-center gap-1"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back to Upload
+              </Button>
 
-            <Tabs value={activeResultTab} onValueChange={setActiveResultTab} className="w-full sm:w-auto">
-              <TabsList className="bg-gray-100">
-                <TabsTrigger value="cv" className="data-[state=active]:bg-white">
-                  CV Analysis
-                </TabsTrigger>
-                <TabsTrigger value="cover-letter" className="data-[state=active]:bg-white">
-                  Cover Letter
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+              <Tabs value={activeResultTab} onValueChange={setActiveResultTab} className="w-auto">
+                <TabsList>
+                  <TabsTrigger value="cv">CV Analysis</TabsTrigger>
+                  <TabsTrigger value="cover-letter">Cover Letter</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+
+            {activeResultTab === "cv" ? (
+              <EnhancedCv content={enhancedCv} originalFile={file} originalText={originalCvText} />
+            ) : (
+              <CoverLetter content={coverLetter} />
+            )}
           </div>
-
-          {activeResultTab === "cv" ? (
-            <EnhancedCv content={enhancedCv} originalFile={file} originalText={originalCvText} />
-          ) : (
-            <CoverLetter content={coverLetter} />
-          )}
-        </div>
-      )}
-    </div>
+        )}
+      </CardContent>
+    </Card>
   )
 }
 

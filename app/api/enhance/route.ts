@@ -1,10 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { extractTextFromBase64Pdf } from "@/lib/pdf-extractor";
 import { extractTextFromBase64PdfFallback } from "@/lib/pdf-extractor-fallback";
-import {
-  enhanceCvWithGpt,
-  generateCoverLetterWithGpt,
-} from "@/lib/gpt-service";
+import { processCV } from "@/lib/gpt-service";
 
 export async function POST(request: NextRequest) {
   try {
@@ -49,20 +46,16 @@ export async function POST(request: NextRequest) {
     console.log("Extracted CV text length:", cvText.length);
 
     try {
-      const enhancedCv = await enhanceCvWithGpt(cvText, jobDescription);
-      const coverLetter = await generateCoverLetterWithGpt(
-        cvText,
-        jobDescription
-      );
+      const result = await processCV(cvText, jobDescription);
 
       console.log("Generated content:", {
-        enhancedCvType: typeof enhancedCv,
-        coverLetterLength: coverLetter.length,
+        enhancedCvType: typeof result.enhancedCv,
+        coverLetterLength: result.coverLetter?.length,
       });
 
       return NextResponse.json({
-        enhancedCv,
-        coverLetter,
+        enhancedCv: result.enhancedCv,
+        coverLetter: result.coverLetter,
         originalCvText: cvText,
         success: true,
       });

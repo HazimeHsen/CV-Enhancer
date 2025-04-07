@@ -105,21 +105,17 @@ export function CvGithubAnalysis({
 
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-        {/* Field Compatibility */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         {analysisData.fieldCompatibility && (
-          <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-5">
-            <JobFieldCompatibility
-              compatibility={analysisData.fieldCompatibility.compatibility}
-              currentField={analysisData.fieldCompatibility.currentField}
-              targetField={analysisData.fieldCompatibility.targetField}
-              recommendations={analysisData.fieldCompatibility.recommendations}
-            />
-          </div>
+          <JobFieldCompatibility
+            compatibility={analysisData.fieldCompatibility.compatibility}
+            currentField={analysisData.fieldCompatibility.currentField}
+            targetField={analysisData.fieldCompatibility.targetField}
+            recommendations={analysisData.fieldCompatibility.recommendations}
+          />
         )}
 
-        {/* Overall Assessment */}
-        <div className="bg-white p-5 rounded-lg md:col-span-2">
+        <div className="bg-white p-5 rounded-lg lg:col-span-2">
           <div className="flex items-center gap-2 mb-2">
             <AlertCircle className="h-5 w-5 text-blue-600" />
             <h3 className="font-medium text-lg">Overall Assessment</h3>
@@ -128,8 +124,7 @@ export function CvGithubAnalysis({
         </div>
       </div>
 
-      {/* Summary Stats & Copy Button */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white p-4 rounded-lg mb-6 gap-3">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white p-4 rounded-lg mb-2 gap-3">
         <div className="flex items-center space-x-2">
           <FileText className="h-5 w-5 text-gray-600" />
           <span className="font-medium">CV Analysis</span>
@@ -158,10 +153,9 @@ export function CvGithubAnalysis({
         </Button>
       </div>
 
-      {/* Tabs for Changes and Learning */}
       <div className="bg-white rounded-lg overflow-hidden">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full grid grid-cols-2 p-0 h-12 bg-gray-100">
+          <TabsList className="w-full grid grid-cols-2 bg-gray-100">
             <TabsTrigger
               value="changes"
               className="rounded-none data-[state=active]:bg-white"
@@ -179,7 +173,6 @@ export function CvGithubAnalysis({
           </TabsList>
 
           <TabsContent value="changes" className="p-5 pt-6">
-            {/* Grid layout for changes */}
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
               {analysisData.sectionsToUpdate.map((section, index) => (
                 <GitHubDiffView
